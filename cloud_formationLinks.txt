@@ -1,0 +1,11 @@
+https://www.singlestoneconsulting.com/articles/cloudformation-mapping-and-conditionals
+
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
+
+
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-appframeworks-ap-south-1.html
+
+
+>aws cloudformation validate-template --template-body file://sampletemplate.json
+
+>aws cloudformation create-stack --template-body file://ec2_secgrp.json --stack-name samplecf1  --parameters ParameterKey=KeyName,ParameterValue=vm_group_1 ParameterKey=InstanceType,ParameterValue=t2.micro

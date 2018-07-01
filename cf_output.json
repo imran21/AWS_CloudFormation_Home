@@ -1,0 +1,14 @@
+{
+"Resources":{
+	"EC2":{
+
+
+	"Type":"AWS::EC2::Instance"
+ }
+},
+
+"Outputs" : {
+   "MyStacksRegion" : { "Value" : { "Ref" : "AWS::Region" } }
+}
+
+}

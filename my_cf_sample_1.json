@@ -1,0 +1,86 @@
+{	"AWSTemplateFormatVersion" : "2010-09-09",
+
+
+	"Description": "A sample template format version",
+
+
+	"Parameters": {
+			"KeyName1" : {
+				"Type":"AWS::EC2::KeyPair::KeyName",	
+				"Description":"A ssh Keypair for Machine access"
+			},
+			
+			"KeyName2" : {
+				"Type":"AWS::EC2::KeyPair::KeyName",	
+				"Description":"A ssh Keypair for Machine access"
+			},
+			
+
+			"InstanceType" : {
+					"Type" : "String",
+					"Default" : "t1.micro",
+					"ConstraintDescription" : "Please enter a valid ec2 instance",
+					"AllowedValues" : ["t1.micro","t2.nano","t2.micro"]
+			}
+	},
+
+
+	"Mappings" : {
+	"AWSInstanceType2Arch" : {
+      "t1.micro"    : { "Arch" : "PV64"   },
+      "t2.nano"     : { "Arch" : "HVM64"  },
+      "t2.micro"    : { "Arch" : "HVM64"  }
+      },
+      "AWSRegionArch2AMI" : {
+      "us-east-1" : {"PV64" : "ami-2a69aa47", "HVM64" : "ami-6869aa05", "HVMG2" : "ami-3353c649"},
+      "us-east-2" : {"PV64" : "NOT_SUPPORTED", "HVM64" : "ami-f6035893", "HVMG2" : "NOT_SUPPORTED"}
+		}
+	},
+
+	"Resources" : {
+		"EC21" : {
+			"Type":"AWS::EC2::Instance",
+			"Properties" : {
+			"InstanceType": { "Ref": "InstanceType" },
+			"KeyName": { "Ref":"KeyName1"},
+			"ImageId":{ "Fn::FindInMap" :[ "AWSRegionArch2AMI", { "Ref":"AWS::Region" },
+					  { "Fn::FindInMap" :[ "AWSInstanceType2Arch", {  "Ref":"InstanceType" }, "Arch" ] }  ] }
+			}
+		},
+		"EC22" : {
+			"Type":"AWS::EC2::Instance",
+			"Properties" : {
+			"InstanceType": { "Ref": "InstanceType" },
+			"KeyName": { "Ref":"KeyName2"},
+			"ImageId":{ "Fn::FindInMap" :[ "AWSRegionArch2AMI", { "Ref":"AWS::Region" },
+					  { "Fn::FindInMap" :[ "AWSInstanceType2Arch", {  "Ref":"InstanceType" }, "Arch" ] }  ] }
+			}
+		},
+
+		"InstanceSecurityGroup" : {
+			"Type" : "AWS::EC2::SecurityGroup",
+			"Properties":{
+			"GroupDescription":"Enable the security group for ec2",
+			"SecurityGroupIngress" :[{
+			"IpProtocol" : "tcp",
+          	"FromPort" : "22",
+         	 "ToPort" : "22",
+         	 "CidrIp" : "0.0.0.0/0"
+			}]
+			}
+		}
+
+	},
+
+	"Outputs" : {
+    	"InstanceId1" : {
+      		"Description" : "InstanceId of the newly created EC2 instance",
+ 		     "Value" : { "Ref" : "EC21" }
+    		},
+
+    		"InstanceId2" : {
+      		"Description" : "InstanceId of the newly created EC2 instance",
+ 		     "Value" : { "Ref" : "EC22" }
+    		}
+    	}
+}
