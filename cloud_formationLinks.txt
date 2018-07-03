@@ -7,6 +7,15 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-appframeworks-ap-south-1.html
 
+## AWS CloudFormation InternsicFunctions and Attributes
+https://github.com/awsdocs/aws-cloudformation-user-guide/blob/master/doc_source/intrinsic-function-reference-getatt.md
+
+https://stackoverflow.com/questions/40139879/aws-cloudformation-use-fnjoin-in-a-list
+https://medium.com/linux-academy/using-cloudformation-intrinsic-functions-1865413f3bc2
+
+--------------------------
+TO RUN AWS CLOUD FORMATION
+--------------------------
 
 >aws cloudformation validate-template --template-body file://sampletemplate.json
 
