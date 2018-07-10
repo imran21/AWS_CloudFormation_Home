@@ -1,0 +1,71 @@
+## This is the cloudFormation which create two security group which performs the following task
+# 1. Create a two security group (awsSecurityGroup1 ,awsSecurityGroup2)
+# 2. Assign securitygroup1 GroupID to source list of awsSecurityGroup2
+## No Parameters involved in it.
+
+{
+         "AWSTemplateFormatVersion" : "2010-09-09",
+"Parameters": {
+
+ },
+ "Resources": {
+"awsSecurityGroup1": {
+        "Type":"AWS::EC2::SecurityGroup",
+        "Properties":{
+                "VpcId":"vpc-22a35a4a",
+                 "GroupDescription":"cf_sec_grp_1",
+                "Tags":[{"Key":"Name","Value":"cf_sg_1"}],
+                "SecurityGroupIngress":[ {
+                        "IpProtocol":"tcp",
+                        "FromPort":"80",
+                        "ToPort":"80",
+                        "CidrIp":"0.0.0.0/0"
+
+                },
+                {
+                        "IpProtocol":"tcp",
+                        "FromPort":"22",
+                        "ToPort":"22",
+                        "CidrIp":"0.0.0.0/0"
+
+                }]
+
+        }
+
+},
+"awsSecurityGroup2": {
+        "Type":"AWS::EC2::SecurityGroup",
+        "Properties":{
+                "VpcId":"vpc-22a35a4a",
+                 "GroupDescription":"cf_sec_grp_2",
+                "Tags":[{"Key":"Name","Value":"cf_sg_2"}],
+                "SecurityGroupIngress":[ {
+                        "IpProtocol":"tcp",
+                        "FromPort":"80",
+                        "ToPort":"80",
+                       "SourceSecurityGroupId": {
+                                "Fn::GetAtt":["awsSecurityGroup1","GroupId"]}
+
+                },
+                {
+                        "IpProtocol":"tcp",
+                        "FromPort":"22",
+                        "ToPort":"22",
+                        "CidrIp":"0.0.0.0/0"
+
+                }]
+
+        }
+
+}
+},
+
+
+"Outputs":{
+"awsSecurity1": {
+"Value":{"Fn::GetAtt":["awsSecurityGroup1", "GroupId"]}
+}
+
+
+}
+}
