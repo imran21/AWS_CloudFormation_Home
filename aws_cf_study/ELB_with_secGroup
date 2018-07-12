@@ -1,0 +1,62 @@
+## Elb creation using CloudFormation
+##Pre-requisite
+1. SecurityGroup Creation
+2. Maping SecurityGroup Creation to the load balancer.
+3. Parameter Vlaues -ELB Name
+
+
+
+{   "AWSTemplateFormatVersion" : "2010-09-09",
+
+
+"Description": "A sample Cloud Formation Template to create ELB instances",
+ "Parameters":{
+        "ELB":{
+                "Description":"Name for the ELB",
+                "Type":"String",
+                "Default":"Sample ELB"
+        }
+
+ },
+
+ "Resources":{
+        "ElbCreation":{
+                "DependsOn":"SecurityGroupCreation",
+                "Type":"AWS::ElasticLoadBalancing::LoadBalancer",
+                "Properties":{
+                        "LoadBalancerName":{"Ref":"ELB"},
+                        "CrossZone":"True",
+                        "Listeners":[{
+                                        "InstancePort" : "80",
+                                        "InstanceProtocol" :"HTTP",
+                                        "LoadBalancerPort" :"80",
+                                        "Protocol" : "HTTP"     }],
+
+                        "SecurityGroups":[{"Fn::Join":["", [{"Fn::GetAtt":["SecurityGroupCreation","GroupId"]}]]}],
+                        "AvailabilityZones":["us-east-2a","us-east-2b"]
+
+
+                }
+
+        },
+        "SecurityGroupCreation": {
+                "Type":"AWS::EC2::SecurityGroup",
+                "Properties":{
+                        "VpcId":"vpc-22a35a4a",
+                        "GroupName":"AWS_ELB_SG",
+                        "GroupDescription":"Sample Security Group for ELB",
+                        "SecurityGroupIngress":[{
+                                 "IpProtocol":"tcp",
+                                 "FromPort":"80",
+                                 "ToPort":"80",
+                                 "CidrIp":"0.0.0.0/0"
+                        }],
+                        "Tags":[{ "Key":"Name","Value":"ELB_SG"}]
+
+                }
+        }
+ }
+
+
+
+}
