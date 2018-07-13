@@ -1,0 +1,29 @@
+In cloud formation after the deleting the stack all the provesion which are created by cloudformation will be deleted.
+To retain the the provision even after the stack deletion, use the following code in the resources set of the stack
+
+"DeletionPolicy" : "Retain"
+
+Example:
+
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Resources" : {
+    "myS3Bucket" : {
+      "Type" : "AWS::S3::Bucket",
+      "DeletionPolicy" : "Retain"
+    }
+  }
+}
+
+## We Also have a snapshot policy which takes the snapshot of some reources while deletion
+## Snapshot is supported only for the following resources
+
+AWS::EC2::Volume, 
+AWS::ElastiCache::CacheCluster,
+AWS::ElastiCache::ReplicationGroup,
+AWS::RDS::DBInstance, 
+AWS::RDS::DBCluster, 
+AWS::Redshift::Cluster
+
+for more details we can have a look at 
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html
