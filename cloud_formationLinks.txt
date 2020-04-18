@@ -19,4 +19,5 @@ TO RUN AWS CLOUD FORMATION
 
 >aws cloudformation validate-template --template-body file://sampletemplate.json
 
->aws cloudformation create-stack --template-body file://ec2_secgrp.json --stack-name samplecf1  --parameters ParameterKey=KeyName,ParameterValue=vm_group_1 ParameterKey=InstanceType,ParameterValue=t2.micro
+>aws cloudformation create-stack --stack-name demo1 --template-body file://ec2_test.json --parameters ParameterKey=KeyPair,ParameterValue=mgdb ParameterKey=web1InstanceType1,ParameterValue=t2.micro ParameterKey=web1AvailabilityZone1,ParameterValue=us-east-2a
+
